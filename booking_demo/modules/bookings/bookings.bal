@@ -1,3 +1,4 @@
+import ballerina/log;
 import booking_demo.types;
 
 types:Booking[] bookings = [];
@@ -12,8 +13,11 @@ public function addBooking(types:Booking toBeAdded) returns error? {
         select booking;
 
     if existing.length() > 0 {
+        log:printWarn("Booking alteady exists", booking = toBeAdded);
         return error("Booking already exists", booking = toBeAdded);
     }
+
+    log:printInfo("Adding new booking", booking = toBeAdded);
     bookings.push(toBeAdded);
 }
 

@@ -1,7 +1,12 @@
 import ballerina/time;
 
+public enum Model {
+    A350,
+    Boeing747
+}
+
 public type AirPlane record {|
-    string model;
+    Model model;
     string name;
 |};
 

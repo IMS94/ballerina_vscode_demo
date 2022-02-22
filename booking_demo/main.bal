@@ -13,12 +13,12 @@ public function main() returns error? {
 
     types:AirPlane plane1 = {
         name: "AB1",
-        model: "Airbus A350"
+        model: types:A350
     };
 
     types:AirPlane plane2 = {
         name: "B1",
-        model: "Boeing 747"
+        model: types:Boeing747
     };
 
     types:Flight flightToLondon = {
