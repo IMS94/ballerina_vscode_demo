@@ -1,34 +1,64 @@
 import ballerina/io;
+import booking_demo.types;
+import ballerina/uuid;
 import ballerina/test;
 
 // Before Suite Function
 
 @test:BeforeSuite
 function beforeSuiteFunc() {
-    io:println("I'm the before suite function!");
+    io:println("Setting up test!");
 }
 
-// Test function
-
+# Test add booking function
 @test:Config {}
-function testFunction() {
-    string name = "John";
-    string welcomeMsg = hello(name);
-    test:assertEquals("Hello, John", welcomeMsg);
-}
+function testAddBooking() {
+    types:AirPlane plane = {
+        name: "B123",
+        model: types:Boeing747
+    };
 
-// Negative Test function
+    types:Flight flight = {
+        plane: plane,
+        origin: "Colombo",
+        destination: "London",
+        id: uuid:createType1AsString(),
+        departure: {
+            year: 2022,
+            month: 2,
+            day: 23,
+            utcOffset: {hours: 0},
+            hour: 23,
+            minute: 0,
+            second: 0
+        }
+    };
 
-@test:Config {}
-function negativeTestFunction() {
-    string name = "";
-    string welcomeMsg = hello(name);
-    test:assertEquals("Hello, World!", welcomeMsg);
+    types:Passenger passenger = {
+        firstName: "John",
+        lastName: "Doe",
+        id: uuid:createType1AsString(),
+        designation: "Mr"
+    };
+
+    types:Booking booking = {
+        flight: flight,
+        passenger: passenger
+    };
+
+    error? addResult = addBooking(booking);
+    test:assertFalse(addResult is error);
+
+    types:Booking[] bookings = findBookingsByFlight(flight);
+    test:assertEquals(bookings.length(), 1);
+
+    types:Booking actual = bookings[0];
+    test:assertEquals(actual, booking);
 }
 
 // After Suite Function
 
 @test:AfterSuite
 function afterSuiteFunc() {
-    io:println("I'm the after suite function!");
+    io:println("Finalize test!");
 }
