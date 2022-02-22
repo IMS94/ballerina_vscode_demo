@@ -5,20 +5,21 @@ types:Booking[] bookings = [];
 
 # Add the provided booking
 #
-# + booking - Booking
-public function addBooking(types:Booking toBeAdded) returns error? {
+# + bookingToBeAdded - Booking
+# + return - An error if booking is invalid
+public function addBooking(types:Booking bookingToBeAdded) returns error? {
     types:Booking[] existing = from var booking in bookings
-        where booking.flight.id == toBeAdded.flight.id
-        where booking.passenger.id == toBeAdded.flight.id
+        where booking.flight.id == bookingToBeAdded.flight.id
+        where booking.passenger.id == bookingToBeAdded.flight.id
         select booking;
 
     if existing.length() > 0 {
-        log:printWarn("Booking alteady exists", booking = toBeAdded);
-        return error("Booking already exists", booking = toBeAdded);
+        log:printWarn("Booking alteady exists", booking = bookingToBeAdded);
+        return error("Booking already exists", booking = bookingToBeAdded);
     }
 
-    log:printInfo("Adding new booking", booking = toBeAdded);
-    bookings.push(toBeAdded);
+    log:printInfo("Adding new booking", booking = bookingToBeAdded);
+    bookings.push(bookingToBeAdded);
 }
 
 # Find all bookings made for a flight
@@ -48,7 +49,7 @@ public function findBookingsByPassenger(types:Passenger passenger) returns types
 public function removeBooking(types:Booking booking) returns boolean {
     int? index = bookings.indexOf(booking);
     if index is int {
-        types:Booking remove = bookings.remove(index);
+        types:Booking _ = bookings.remove(index);
         return true;
     }
 

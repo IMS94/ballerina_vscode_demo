@@ -1,7 +1,7 @@
 public function main() {
-    getValue();
+    getValue();   
 }
 
-function getValue() returns string|int|error {
+function getValue() returns string|int {
     
 }

@@ -1,4 +1,3 @@
-import ballerina/io;
 import ballerina/http;
 
 type Repo record {
@@ -23,21 +22,14 @@ type Event record {
 
 type PullRequestEvent record {|
     string repository;
+    string user;
 |};
 
-service /events on new http:Listener(9090) {
+service /ballerina on new http:Listener(9090) {
 
-    resource function get pull\-requests() returns PullRequestEvent[]|error {
+    resource function get pull\-requests() returns PullRequestEvent[]|error? {
         http:Client ghClient = check new ("https://api.github.com");
-        Event[] response = check ghClient->get("/orgs/ballerina-platform/events");
-
-        PullRequestEvent[] events = [];
-        foreach Event item in response {
-            if item.'type == "PullRequestEvent" {
-                events.push({repository: item.repo.name});
-            }
-        }
-
-        return events;
+        json events = check ghClient->get("/orgs/ballerina-platform/events");
+        return;
     }
 }

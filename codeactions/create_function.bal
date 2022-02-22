@@ -4,6 +4,7 @@ type Project record {
 };
 
 function demo(string str) {
-    int a = generateValue(str);
-    Project p = createProject();
+    int a = getInt(str);
+    Project proj1 = createProject(1, "test")
 }
+
